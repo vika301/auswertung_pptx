@@ -1,4 +1,4 @@
-import sys  # Wir importieren sys, um den Pfad hinzuzufügen
+import sys
 import os
 from flask import Flask, render_template, request, send_file
 from werkzeug.utils import secure_filename
@@ -17,9 +17,6 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 # Sicherstellen, dass der Upload-Ordner existiert
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# Pfad zum festen Logo im static-Ordner
-logo_path = os.path.join(app.static_folder, 'logo.jpg')
-
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -37,8 +34,8 @@ def upload_file():
         # Speicherort für die bearbeitete PowerPoint
         output_path = os.path.join(app.config['UPLOAD_FOLDER'], "output.pptx")
 
-        # Anwendung der PowerPoint-Verarbeitungslogik (Hinzufügen des Logos)
-        modify_presentation(pptx_path, output_path, logo_path)
+        # Anwendung der PowerPoint-Verarbeitungslogik
+        modify_presentation(pptx_path, output_path)
 
         # Überarbeitete PowerPoint-Datei als Download zurückgeben
         return send_file(output_path, as_attachment=True, download_name="bearbeitet.pptx")
