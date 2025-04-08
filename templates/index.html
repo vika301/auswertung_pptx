@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>PPTX Designer</title>
+</head>
+<body>
+    <h1>PPTX Hochladen & Gestalten</h1>
+
+    <img src="/static/logo.jpg" alt="Logo" width="200"><br><br>
+
+    <form id="uploadForm" method="POST" enctype="multipart/form-data">
+        <label for="file">PowerPoint:</label>
+        <input type="file" name="file" id="file" required><br><br>
+
+        <button type="submit">Hochladen & Verarbeiten</button>
+    </form>
+
+    <p id="status"></p>
+    <a id="downloadLink" style="display: none;" download="output.pptx">Download überarbeitete Präsentation</a>
+
+    <script>
+        document.getElementById("uploadForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData();
+            formData.append("file", document.getElementById("file").files[0]);
+
+            document.getElementById("status").textContent = "Verarbeitung läuft...";
+
+            try {
+                const response = await fetch("/", {  // Hier geht es an den Root-Endpunkt
+                    method: "POST",
+                    body: formData
+                });
+
+                // Die Antwort als Blob empfangen (die überarbeitete PowerPoint)
+                const blob = await response.blob();
+                const link = document.getElementById("downloadLink");
+
+                link.href = URL.createObjectURL(blob);
+                link.style.display = "inline";
+                link.textContent = "Download: überarbeitete PowerPoint";
+                document.getElementById("status").textContent = "Fertig ✅";
+            } catch (err) {
+                document.getElementById("status").textContent = "Fehler ❌: " + err.message;
+            }
+        });
+    </script>
+</body>
+</html>
