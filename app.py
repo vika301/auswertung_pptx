@@ -1,4 +1,3 @@
-import sys
 import os
 from flask import Flask, render_template, request, send_file
 from werkzeug.utils import secure_filename
@@ -14,33 +13,30 @@ app.config['UPLOAD_FOLDER'] = 'uploads'
 
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# Definiere den festen Pfad für das Logo im static-Ordner
-logo_path = os.path.join(app.static_folder, 'logo.jpg')  # Name des Logos, z.B. logo.jpg
+logo_path = os.path.join(app.static_folder, 'logo.jpg')
 
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
-        pptx_file = request.files['file']  # Der Name des Files im HTML-Formular ist "file"
+        pptx_file = request.files['file']
 
         if not pptx_file:
             return "Bitte PowerPoint hochladen."
 
-        # Save the PowerPoint file
         pptx_path = os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(pptx_file.filename))
         pptx_file.save(pptx_path)
 
-        # Speicherort der bearbeiteten PowerPoint-Datei
         output_path = os.path.join(app.config['UPLOAD_FOLDER'], "output.pptx")
 
-        # Funktion zur Bearbeitung der PowerPoint-Präsentation
         modify_presentation(pptx_path, output_path, logo_path)
 
-        # Senden der bearbeiteten PowerPoint-Datei zum Download
         return send_file(output_path, as_attachment=True, download_name="bearbeitet.pptx")
 
     return render_template('index.html')
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Flask für den dynamischen Port von Render starten
+    port = int(os.environ.get("PORT", 5000))  # Falls der Port nicht gesetzt ist, wird 5000 als Fallback verwendet
+    app.run(debug=True, host='0.0.0.0', port=port)
