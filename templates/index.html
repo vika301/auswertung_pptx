@@ -29,7 +29,7 @@
             document.getElementById("status").textContent = "Verarbeitung läuft...";
 
             try {
-                const response = await fetch("/", {  // Hier geht es an den Root-Endpunkt
+                const response = await fetch("/", {
                     method: "POST",
                     body: formData
                 });
