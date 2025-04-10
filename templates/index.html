@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerPoint bearbeiten</title>
+</head>
+<body>
+    <h1>PowerPoint-Datei hochladen und bearbeiten</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label for="file">Wählen Sie eine PPTX-Datei:</label>
+        <input type="file" name="file" id="file" accept=".pptx" required>
+        <button type="submit">Hochladen und bearbeiten</button>
+    </form>
+</body>
+</html>
