@@ -1,5 +1,5 @@
-Flask
-python-pptx
+Flask==2.0.1
+python-pptx==0.6.21
 werkzeug
 pandas
-Pillow
+Pillow==8.2.0
